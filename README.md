@@ -2,7 +2,7 @@
 Custom wordpress Docker image
 
 Version info:
-* Wordpress version:  5.5
+* Wordpress version:  5.5.3
 * Apache version:     2.4
 * PHP version:        7.4
 
