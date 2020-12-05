@@ -78,11 +78,14 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
 				<IfModule mod_rewrite.c>
 				RewriteEngine On
 				RewriteBase /
+				RewriteRule ^(server-info|server-status) - [L]
 				RewriteRule ^index\.php$ - [L]
 				RewriteCond %{REQUEST_FILENAME} !-f
 				RewriteCond %{REQUEST_FILENAME} !-d
 				RewriteRule . /index.php [L]
 				</IfModule>
+				php_value post_max_size 96M
+				php_value upload_max_filesize 64M
 				# END WordPress
 			EOF
 			chown "$user:$group" .htaccess
