@@ -1,6 +1,9 @@
 # Wordpress-Apache
 Custom wordpress Docker image, from bitnami base image
 
+Docker Hub
+https://hub.docker.com/r/hessanheutinkict/wordpress
+
 Version info:
 * Wordpress version:  5.6
 * Apache version:     2.4
