@@ -13,7 +13,7 @@
 ##
 image:
   registry: docker.io
-  repository: hessanheutinkict/wordpress
+  repository: shesselink81/wordpress
   tag: 'latest'
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
