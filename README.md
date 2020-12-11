@@ -1,8 +1,8 @@
 # Wordpress-Apache
-Custom wordpress Docker image
+Custom wordpress Docker image, from bitnami base image
 
 Version info:
-* Wordpress version:  5.5.3
+* Wordpress version:  5.6
 * Apache version:     2.4
 * PHP version:        7.4
 
