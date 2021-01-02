@@ -13,8 +13,5 @@ RUN sed -i -r 's/#LoadModule filter_module/LoadModule filter_module/' /opt/bitna
 RUN sed -i -r 's/#LoadModule ext_filter_module/LoadModule ext_filter_module/' /opt/bitnami/apache/conf/httpd.conf
 RUN apt remove build-essential libssh2-1-dev -y
 RUN apt autoremove -y
-COPY README.md /opt/bitnami/README.md
 ## Revert to the original non-root user
 USER 1001
-## TEST
-##

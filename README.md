@@ -2,7 +2,7 @@
 Custom wordpress Docker image, from bitnami base image
 
 Docker Hub
-https://hub.docker.com/r/shesselink81/wordpress
+https://hub.docker.com/r/shesselink81/wordpress-apache
 
 Helm install example:
 * helm repo add bitnami https://charts.bitnami.com/bitnami
@@ -24,5 +24,3 @@ Installed extra packages:
 * net-tools
 * iputils-ping
 * unzip
-
----
