@@ -15,3 +15,4 @@ RUN apt remove build-essential libssh2-1-dev -y
 RUN apt autoremove -y
 ## Revert to the original non-root user
 USER 1001
+## TEST
