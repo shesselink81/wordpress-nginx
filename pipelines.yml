@@ -1,0 +1,80 @@
+resources:
+- name: simplehelmRepo_docker
+  type: GitRepo
+  configuration:
+    gitProvider: my_github
+    path: myrepo/simplehelm
+    files:
+      include: "Dockerfile|server.js|package.json"
+ 
+- name: simplehelmDockerImage
+  type: Image
+  configuration:
+    registry: docker-local
+    imageName: myproject/simplehelm
+    imageTag: latest
+ 
+- name: simplehelmRepo_chart
+  type: GitRepo
+  configuration:
+    gitProvider: my_github
+    path: myrepo/simplehelm
+    files:
+      include: "simplehelm.*"
+ 
+- name: simplehelmChart
+  type: HelmChart
+  configuration:
+    sourceArtifactory: art
+    repository: simplecharts
+    chart: simplehelm
+    version: 0.0.0   
+pipelines:
+  - name: helm_full_flow
+    steps:
+      - name: build_image
+        type: DockerBuild
+        configuration:
+          affinityGroup: buildAndPush
+          integrations:
+            - name: art-docker-local
+          inputResources:
+            - name: simplehelmRepo_docker
+          dockerFileLocation: .
+          dockerFileName: Dockerfile
+          dockerImageName: myproject/simplehelm
+          dockerImageTag: $run_number
+ 
+      - name: push_image
+        type: DockerPush
+        configuration:
+          affinityGroup: buildAndPush
+          integrations:
+            - name: art-docker-local
+          targetRepository: myproject/simplehelm
+          inputSteps:
+            - name: build_image
+          outputResources:
+            - name: simplehelmDockerImage
+ 
+      - name: publish_helm_chart
+        type: HelmPublish
+        configuration:
+          inputResources:
+            - name: simplehelmRepo_chart
+          outputResources:
+            - name: simplehelmChart
+          chartPath: ./simplehelm
+ 
+      - name: deploy_helm_chart
+        type: HelmDeploy
+        configuration:
+          integrations:
+            - name: tr_kubernetes
+          inputResources:
+            - name: simplehelmChart
+            - name: simplehelmDockerImage
+          releaseName: simplehelm
+          flags: "--namespace dev"
+          valueFilePaths:
+            - values.yaml
