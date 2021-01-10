@@ -2,8 +2,8 @@ resources:
 - name: simplehelmRepo_docker
   type: GitRepo
   configuration:
-    gitProvider: my_github
-    path: myrepo/simplehelm
+    gitProvider: Github_Sander
+    path: wordpress-apache
     files:
       include: "Dockerfile|server.js|package.json"
  
@@ -17,8 +17,8 @@ resources:
 - name: simplehelmRepo_chart
   type: GitRepo
   configuration:
-    gitProvider: my_github
-    path: myrepo/simplehelm
+    gitProvider: Github_Sander
+    path: wordpress-apache/simplehelm
     files:
       include: "simplehelm.*"
  
