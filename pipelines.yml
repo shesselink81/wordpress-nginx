@@ -1,34 +1,34 @@
 resources:
-- name: simplehelmRepo_docker
+- name: wordpress-apacheRepo_docker
   type: GitRepo
   configuration:
     gitProvider: Github_Sander
     path: wordpress-apache
     files:
-      include: "Dockerfile|server.js|package.json"
+      include: "Dockerfile"
  
-- name: simplehelmDockerImage
+- name: wordpress-apacheDockerImage
   type: Image
   configuration:
     registry: docker-local
-    imageName: myproject/simplehelm
+    imageName: shesselink81/wordpress-apache
     imageTag: latest
  
-- name: simplehelmRepo_chart
+- name: wordpress-apacheRepo_chart
   type: GitRepo
   configuration:
     gitProvider: Github_Sander
-    path: wordpress-apache/simplehelm
+    path: helm-charts/wordpress-apache
     files:
-      include: "simplehelm.*"
+      include: "*.*"
  
-- name: simplehelmChart
+- name: wordpress-apacheChart
   type: HelmChart
   configuration:
     sourceArtifactory: art
-    repository: simplecharts
-    chart: simplehelm
-    version: 0.0.0   
+    repository: wordpress-apacheChart
+    chart: wordpress-apache
+    version: 0.1.0
 pipelines:
   - name: helm_full_flow
     steps:
@@ -39,10 +39,10 @@ pipelines:
           integrations:
             - name: art-docker-local
           inputResources:
-            - name: simplehelmRepo_docker
+            - name: wordpress-apacheRepo_docker
           dockerFileLocation: .
           dockerFileName: Dockerfile
-          dockerImageName: myproject/simplehelm
+          dockerImageName: shesselink81/wordpress-apache
           dockerImageTag: $run_number
  
       - name: push_image
@@ -51,20 +51,20 @@ pipelines:
           affinityGroup: buildAndPush
           integrations:
             - name: art-docker-local
-          targetRepository: myproject/simplehelm
+          targetRepository: shesselink81/wordpress-apache
           inputSteps:
             - name: build_image
           outputResources:
-            - name: simplehelmDockerImage
+            - name: wordpress-apacheDockerImage
  
       - name: publish_helm_chart
         type: HelmPublish
         configuration:
           inputResources:
-            - name: simplehelmRepo_chart
+            - name: wordpress-apacheRepo_chart
           outputResources:
-            - name: simplehelmChart
-          chartPath: ./simplehelm
+            - name: wordpress-apacheRepo_chart
+          chartPath: ./wordpress-apache
  
       - name: deploy_helm_chart
         type: HelmDeploy
@@ -72,9 +72,9 @@ pipelines:
           integrations:
             - name: tr_kubernetes
           inputResources:
-            - name: simplehelmChart
-            - name: simplehelmDockerImage
-          releaseName: simplehelm
+            - name: wordpress-apacheChart
+            - name: wordpress-apacheDockerImage
+          releaseName: wordpress-apache
           flags: "--namespace dev"
           valueFilePaths:
             - values.yaml
