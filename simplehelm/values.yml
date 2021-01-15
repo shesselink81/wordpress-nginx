@@ -1,6 +1,0 @@
-replicaCount: 1
-image:
-  repository: ${res_simplehelmDockerImage_imageName}
-  tag: ${res_simplehelmDockerImage_imageTag}
-  pullPolicy: IfNotPresent
-  port: 80
