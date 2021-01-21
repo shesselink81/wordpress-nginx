@@ -18,5 +18,4 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: shesselink81/wordpress-apache
-          # List of tags
           tags: latest
