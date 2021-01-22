@@ -13,7 +13,17 @@ if [[ "$1" == "nami" && "$2" == "start" ]] || [[ "$1" == "httpd" ]]; then
     . /post-init.sh
 fi
 
-wp plugin update --all
-wp theme update --all
-
+if [ ! -f "/bitnami/wordpress/.user_scripts1_initialized" ]; then
+    wp plugin update --all
+    wp theme update --all
+    echo php_value upload_max_filesize 256M > /bitnami/wordpress/.htaccess
+    echo php_value post_max_size 256M >> /bitnami/wordpress/.htaccess
+    echo php_value memory_limit 512M >> /bitnami/wordpress/.htaccess
+    echo php_value max_execution_time 600 >> /bitnami/wordpress/.htaccess
+    echo php_value max_input_time 600 >> /bitnami/wordpress/.htaccess
+    chmod 750 /bitnami/wordpress/wp-config.php
+    wp plugin activate w3-total-cache
+    wp plugin activate all-in-one-wp-migration
+    touch "/bitnami/wordpress/.user_scripts1_initialized"
+fi
 exec tini -- "$@"
