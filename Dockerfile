@@ -14,5 +14,6 @@ RUN sed -i -r 's/#LoadModule ext_filter_module/LoadModule ext_filter_module/' /o
 RUN apt remove build-essential libssh2-1-dev -y
 RUN apt autoremove -y
 COPY ./app-entrypoint.sh /app-entrypoint.sh
+RUN chmod 755 /app-entrypoint.sh
 ## Revert to the original non-root user
 USER 1001
