@@ -21,9 +21,10 @@ Version info:
 * PHP version:        7.4
 
 Installed php extensions:
-* redis v5.3.1
+* redis v5.3.2
 * memcached v3.1.5
 * ssh2 v1.2
+* imagick v3.4.4
   
 Installed extra packages:
 * nano
