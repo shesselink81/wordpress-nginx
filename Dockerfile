@@ -1,7 +1,6 @@
 FROM bitnami/wordpress:5-debian-10
 LABEL maintainer "Bitnami <containers@bitnami.com>"
 
-## Change user to perform privileged actions
 USER 0
 RUN apt-get update && apt-get install -y --no-install-recommends nano wget net-tools iputils-ping unzip pkg-config autoconf build-essential
 RUN set -ex; \
@@ -19,9 +18,6 @@ RUN set -ex; \
 	\
 	pecl install imagick-3.4.4; \
 	pecl install redis-5.3.2; \
-	#docker-php-ext-enable imagick; \
-	\
-# reset apt-mark's "manual" list so that "purge --auto-remove" will remove all build dependencies
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark; \
 	ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
@@ -42,5 +38,4 @@ RUN apt-get update && apt-get upgrade -y && \
     rm -r /var/lib/apt/lists /var/cache/apt/archives
 COPY ./app-entrypoint.sh /app-entrypoint.sh
 RUN chmod 755 /app-entrypoint.sh
-## Revert to the original non-root user
 USER 1001
