@@ -1,4 +1,4 @@
-FROM bitnami/wordpress:5-debian-10
+FROM quay.io/bitnami/wordpress:5-debian-10
 LABEL maintainer "Bitnami <containers@bitnami.com>"
 
 USER 0
