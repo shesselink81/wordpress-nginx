@@ -3,19 +3,21 @@
 Custom wordpress Docker image, from bitnami base image
 
 Helm install example:
-
-* helm repo add center https://repo.chartcenter.io
-* helm install wordpress-apache center/gh-shesselink81/wordpress-apache
+```console
+helm repo add gh-shesselink81-public https://shesselink81.github.io/helm-charts/public-charts/
+helm install wordpress-apache gh-shesselink81-public/wordpress-apache
+```
 
 Docker Compose example:
+```console
+curl -sSL https://raw.githubusercontent.com/shesselink81/wordpress-apache/main/docker-compose.yml > docker-compose.yml
+docker-compose up -d
+```
 
-* curl -sSL https://raw.githubusercontent.com/shesselink81/wordpress-apache/main/docker-compose.yml > docker-compose.yml
-* docker-compose up -d
+Helm Chart:
+https://shesselink81.github.io/helm-charts/public-charts/wordpress-apache
 
-Helm Chart
-https://chartcenter.io/gh-shesselink81/wordpress-apache
-
-Docker Hub
+Docker Hub:
 https://hub.docker.com/r/shesselink81/wordpress-apache
 
 Version info:
