@@ -17,8 +17,8 @@ docker-compose up -d
 Helm Chart:
 https://artifacthub.io/packages/helm/gh-shesselink81-public/wordpress-apache
 
-Docker Hub:
-https://hub.docker.com/r/shesselink81/wordpress-apache
+Docker images:
+https://quay.io/repository/shesselink81/wordpress-apache?tab=tags
 
 Version info:
 
