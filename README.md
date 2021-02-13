@@ -15,7 +15,7 @@ docker-compose up -d
 ```
 
 Helm Chart:
-https://shesselink81.github.io/helm-charts/public-charts/wordpress-apache
+https://artifacthub.io/packages/helm/gh-shesselink81-public/wordpress-apache
 
 Docker Hub:
 https://hub.docker.com/r/shesselink81/wordpress-apache
