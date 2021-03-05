@@ -38,4 +38,5 @@ RUN apt-get update && apt-get upgrade -y && \
     rm -r /var/lib/apt/lists /var/cache/apt/archives
 COPY ./app-entrypoint.sh /app-entrypoint.sh
 RUN chmod 755 /app-entrypoint.sh
+RUN rm -r -d -f /opt/bitnami/wordpress/wp-content/uploads/*
 USER 1001
