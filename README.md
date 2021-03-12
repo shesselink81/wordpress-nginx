@@ -22,7 +22,7 @@ https://quay.io/repository/shesselink81/wordpress-apache?tab=tags
 
 Version info:
 
-* Wordpress version:  5.7
+* Wordpress version:  5.6.2
 * Apache version:     2.4
 * PHP version:        7.4
 
