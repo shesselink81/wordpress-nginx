@@ -1,7 +1,7 @@
 FROM quay.io/bitnami/wordpress:5-debian-10
 LABEL maintainer "Bitnami <containers@bitnami.com>"
 
-## USER 0
+USER 0
 RUN apt-get update && apt-get install -y --no-install-recommends nano wget net-tools iputils-ping unzip pkg-config autoconf build-essential
 RUN set -ex; \
 	\
@@ -39,4 +39,3 @@ RUN apt-get update && apt-get upgrade -y && \
 COPY ./app-entrypoint.sh /app-entrypoint.sh
 RUN chmod 755 /app-entrypoint.sh
 RUN rm -r -d -f /opt/bitnami/wordpress/wp-content/uploads/*
-## USER 1001
