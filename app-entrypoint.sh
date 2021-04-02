@@ -14,8 +14,8 @@ if [[ "$1" == "nami" && "$2" == "start" ]] || [[ "$1" == "httpd" ]]; then
 fi
 
 if [[ ! -f "/bitnami/wordpress/.user_scripts1_initialized" ]]; then
-    wp plugin update --all
-    wp theme update --all
+    #wp plugin update --all
+    #wp theme update --all
     echo php_value upload_max_filesize 256M > /bitnami/wordpress/.htaccess
     echo php_value post_max_size 256M >> /bitnami/wordpress/.htaccess
     echo php_value memory_limit 512M >> /bitnami/wordpress/.htaccess
