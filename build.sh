@@ -1,0 +1,3 @@
+docker build -t quay.io/shesselink81/wordpress-apache:v5.7.1.0 --pull --no-cache .
+docker build -t quay.io/shesselink81/wordpress-apache:v5.7.1.0-nr --build-arg NEW_RELIC_DAEMON_ADDRESS=nr-daemon:31339 --build-arg NEW_RELIC_AGENT_VERSION=9.17.1.301 --build-arg NEW_RELIC_LICENSE_KEY=a36f3ea04c0cc6040c54ab1da2da432eaddc3cf8 --build-arg NEW_RELIC_APPNAME=test-app01 --build-arg IMAGE_NAME=quay.io/shesselink81/wordpress-apache:v5.7.1.0 --no-cache ./nr/.
+hessel81.azurecr.io
