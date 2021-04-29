@@ -1,5 +1,7 @@
 version: '2'
 services:
+  nr-daemon:
+    image: newrelic/php-daemon
   mariadb:
     image: 'bitnami/mariadb:10.3'
     volumes:
@@ -9,7 +11,7 @@ services:
       - MARIADB_DATABASE=bitnami_wordpress
       - ALLOW_EMPTY_PASSWORD=yes
   wordpress:
-    image: 'quay.io/shesselink81/wordpress-apache:v5.7.1.0'
+    image: 'hessel81.azurecr.io/wordpress-apache:v5.7.1.0-nr'
     ports:
       - '8080:8080'
       - '8443:8443'
@@ -17,6 +19,7 @@ services:
       - 'wordpress_data:/bitnami/wordpress'
     depends_on:
       - mariadb
+      - nr-daemon
     environment:
       - MARIADB_HOST=mariadb
       - MARIADB_PORT_NUMBER=3306

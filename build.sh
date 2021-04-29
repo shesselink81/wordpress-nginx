@@ -1,3 +1,8 @@
-docker build -t quay.io/shesselink81/wordpress-apache:v5.7.1.0 --pull --no-cache .
-docker build -t quay.io/shesselink81/wordpress-apache:v5.7.1.0-nr --build-arg NEW_RELIC_DAEMON_ADDRESS=nr-daemon:31339 --build-arg NEW_RELIC_AGENT_VERSION=9.17.1.301 --build-arg NEW_RELIC_LICENSE_KEY=a36f3ea04c0cc6040c54ab1da2da432eaddc3cf8 --build-arg NEW_RELIC_APPNAME=test-app01 --build-arg IMAGE_NAME=quay.io/shesselink81/wordpress-apache:v5.7.1.0 --no-cache ./nr/.
-hessel81.azurecr.io
+$NEW_RELIC_APPNAME="wordpress-playlists"
+$NEW_RELIC_DAEMON_ADDRESS="localhost:31339"
+$NEW_RELIC_AGENT_VERSION="9.17.1.301"
+$NEW_RELIC_LICENSE_KEY="a36f3ea04c0cc6040c54ab1da2da432eaddc3cf8"
+docker pull quay.io/shesselink81/wordpress-apache:v5.7.1.0
+docker build -t hessel81.azurecr.io/wordpress-apache:v5.7.1.0-nr --build-arg NEW_RELIC_DAEMON_ADDRESS=$NEW_RELIC_DAEMON_ADDRESS --build-arg NEW_RELIC_AGENT_VERSION=$NEW_RELIC_AGENT_VERSION --build-arg NEW_RELIC_LICENSE_KEY=$NEW_RELIC_LICENSE_KEY --build-arg NEW_RELIC_APPNAME=$NEW_RELIC_APPNAME --build-arg IMAGE_NAME=quay.io/shesselink81/wordpress-apache:v5.7.1.0 --no-cache ./nr/.
+docker push hessel81.azurecr.io/wordpress-apache:v5.7.1.0-nr
+docker-compose -f docker-compose-nr.yml up -d
