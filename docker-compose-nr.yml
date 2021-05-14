@@ -3,7 +3,7 @@ services:
   nr-daemon:
     image: newrelic/php-daemon
   mariadb:
-    image: 'bitnami/mariadb:10.3'
+    image: bitnami/mariadb
     volumes:
       - 'mariadb_data:/bitnami/mariadb'
     environment:
@@ -11,7 +11,7 @@ services:
       - MARIADB_DATABASE=bitnami_wordpress
       - ALLOW_EMPTY_PASSWORD=yes
   wordpress:
-    image: 'hessel81.azurecr.io/wordpress-apache:v5.7.1.0-nr'
+    image: 'hessel81.azurecr.io/wordpress-apache:v5.7.2.0-nr'
     ports:
       - '8080:8080'
       - '8443:8443'
@@ -28,6 +28,7 @@ services:
       - ALLOW_EMPTY_PASSWORD=yes
       - WORDPRESS_HTACCESS_OVERRIDE_NONE=no
       - WORDPRESS_HTACCESS_PERSISTENCE_ENABLED=yes
+      - WORDPRESS_SCHEME=https
 volumes:
   mariadb_data:
     driver: local

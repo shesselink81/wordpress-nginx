@@ -24,13 +24,13 @@ Docker images:
 
 Version info:
 
-* Wordpress version:  5.7.1
+* Wordpress version:  5.7.2
 * Apache version:     2.4
 * PHP version:        7.4
 
 Installed php extensions:
 
-* redis v5.3.2
+* redis v5.3.4
 * memcached v3.1.5
 * ssh2 v1.2
 * imagick v3.4.4

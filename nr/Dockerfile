@@ -18,5 +18,5 @@ RUN sed -i -e s/\"REPLACE_WITH_REAL_KEY\"/${NEW_RELIC_LICENSE_KEY}/ \
     $(php -r "echo(PHP_CONFIG_FILE_SCAN_DIR);")/newrelic.ini
 
 RUN chown 1001:1001 $(php -r "echo(PHP_CONFIG_FILE_SCAN_DIR);")/newrelic.ini
-RUN chmod 777 $(php -r "echo(PHP_CONFIG_FILE_SCAN_DIR);")/newrelic.ini
+RUN chmod 755 $(php -r "echo(PHP_CONFIG_FILE_SCAN_DIR);")/newrelic.ini
 USER 1001

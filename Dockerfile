@@ -17,7 +17,7 @@ RUN set -ex; \
 	; \
 	\
 	pecl install imagick-3.4.4; \
-	pecl install redis-5.3.2; \
+	pecl install redis-5.3.4; \
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark; \
 	ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
@@ -28,15 +28,18 @@ RUN set -ex; \
 		| sort -u \
 		| xargs -rt apt-mark manual; \
 	\
-	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	apt-get purge pkg-config autoconf build-essential -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	rm -rf /var/lib/apt/lists/*
 RUN echo 'extension=redis.so' >> /opt/bitnami/php/lib/php.ini
-RUN echo 'extension=imagick.so' >> /opt/bitnami/php/lib/php.ini
 RUN sed -i -r 's/#LoadModule ext_filter_module/LoadModule ext_filter_module/' /opt/bitnami/apache/conf/httpd.conf
 RUN sed -i -r 's/#LoadModule expires_module/LoadModule expires_module/' /opt/bitnami/apache/conf/httpd.conf
 RUN apt-get update && apt-get upgrade -y && \
     rm -r /var/lib/apt/lists /var/cache/apt/archives
 COPY ./app-entrypoint.sh /app-entrypoint.sh
+RUN chown 1001:1001 /opt/bitnami/wordpress/wp-content
+RUN chown 1001:1001 /opt/bitnami/wordpress/wp-config.php
 RUN chmod 755 /app-entrypoint.sh
 RUN rm -r -d -f /opt/bitnami/wordpress/wp-content/uploads/*
 USER 1001
+RUN chmod 755 /opt/bitnami/wordpress/wp-content
+RUN chmod 775 /opt/bitnami/wordpress/wp-config.php
