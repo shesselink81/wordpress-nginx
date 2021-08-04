@@ -2,7 +2,7 @@ FROM quay.io/bitnami/wordpress
 LABEL maintainer "Bitnami <containers@bitnami.com>"
 
 USER 0
-RUN apt-get update && apt-get install -y --no-install-recommends nano wget net-tools iputils-ping unzip pkg-config autoconf build-essential
+RUN apt-get update && apt-get install -y --no-install-recommends nano wget net-tools iputils-ping unzip pkg-config autoconf build-essential pkg-config
 RUN set -ex; \
 	\
 	savedAptMark="$(apt-mark showmanual)"; \
@@ -14,9 +14,10 @@ RUN set -ex; \
 		#libmagickwand-dev \
 		libpng-dev \
 		libzip-dev \
+		libltdl-dev \
 	; \
 	\
-	#pecl install imagick-3.5.1; \
+	#pecl install imagick; \
 	pecl install redis-5.3.4; \
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark; \
@@ -39,10 +40,11 @@ COPY ./ImageMagick.tar.gz /ImageMagick.tar.gz
 RUN tar xvzf ImageMagick.tar.gz
 RUN cd ImageMagick-7.1.0-4
 RUN chmod 755 /ImageMagick-7.1.0-4/configure
-RUN sh /ImageMagick-7.1.0-4/configure
+RUN sh /ImageMagick-7.1.0-4/configure --with-modules
 RUN make
 RUN make install
 RUN ldconfig /usr/local/lib
+RUN pecl install imagick
 #RUN make check
 RUN apt-get purge pkg-config autoconf build-essential -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
 RUN rm -rf /var/lib/apt/lists/*
