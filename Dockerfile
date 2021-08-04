@@ -16,7 +16,7 @@ RUN set -ex; \
 		libzip-dev \
 	; \
 	\
-	pecl install imagick-3.4.4; \
+	pecl install imagick-3.5.1; \
 	pecl install redis-5.3.4; \
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark; \

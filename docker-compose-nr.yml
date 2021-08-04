@@ -11,9 +11,8 @@ services:
       - MARIADB_DATABASE=bitnami_wordpress
       - ALLOW_EMPTY_PASSWORD=yes
   wordpress:
-    image: 'hessel81.azurecr.io/wordpress-apache:v5.7.2.1-nr'
+    image: 'hessel81.azurecr.io/wordpress-apache:v5.8.0.2-nr'
     ports:
-      - '8080:8080'
       - '8443:8443'
     volumes:
       - 'wordpress_data:/bitnami/wordpress'

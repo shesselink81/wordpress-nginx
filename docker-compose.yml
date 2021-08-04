@@ -9,7 +9,7 @@ services:
       - MARIADB_DATABASE=bitnami_wordpress
       - ALLOW_EMPTY_PASSWORD=yes
   wordpress:
-    image: 'quay.io/shesselink81/wordpress-apache:v5.7.2.1'
+    image: 'quay.io/shesselink81/wordpress-apache:v5.8.0.2'
     ports:
       - '8080:8080'
       - '8443:8443'
