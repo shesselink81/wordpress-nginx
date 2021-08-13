@@ -25,6 +25,7 @@ if [[ ! -f "/opt/bitnami/wordpress/.user_scripts1_initialized" ]]; then
     #chmod 755 /opt/bitnami/wordpress/wp-content
     chmod 775 /opt/bitnami/wordpress/wp-config.php
     wp plugin activate w3-total-cache
+	wp plugin activate jetpack
     touch "/opt/bitnami/wordpress/.user_scripts1_initialized"
 fi
 exec tini -- "$@"

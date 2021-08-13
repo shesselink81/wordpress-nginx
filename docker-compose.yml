@@ -1,4 +1,4 @@
-version: '2'
+version: '3.8'
 services:
   mariadb:
     image: 'bitnami/mariadb'
@@ -24,7 +24,9 @@ services:
       - ALLOW_EMPTY_PASSWORD=yes
       - WORDPRESS_HTACCESS_OVERRIDE_NONE=no
       - WORDPRESS_HTACCESS_PERSISTENCE_ENABLED=yes
+      - WORDPRESS_ENABLE_HTTPS=yes
       - WORDPRESS_SCHEME=https
+      - WORDPRESS_AUTO_UPDATE_LEVEL=minor
 volumes:
   mariadb_data:
     driver: local
