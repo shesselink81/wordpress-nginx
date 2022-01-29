@@ -9,6 +9,7 @@ if [[ ! -f "/opt/bitnami/wordpress/.user_scripts1_initialized" ]]; then
     wp plugin delete wp-mail-smtp
     wp plugin delete amp
     wp plugin auto-updates enable --all
+    wp plugin activate --all
     wp config delete WP_AUTO_UPDATE_CORE
     echo php_value upload_max_filesize 256M > /opt/bitnami/wordpress/.htaccess
     echo php_value post_max_size 256M >> /opt/bitnami/wordpress/.htaccess
