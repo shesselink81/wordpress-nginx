@@ -11,13 +11,11 @@ RUN set -ex; \
 	apt-get install -y --no-install-recommends \
 		libfreetype6-dev \
 		libjpeg-dev \
-		#libmagickwand-dev \
 		libpng-dev \
 		libzip-dev \
 		libltdl-dev \
 	; \
 	\
-	#pecl install imagick; \
 	pecl install redis-5.3.4; \
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark; \
@@ -28,14 +26,12 @@ RUN set -ex; \
 		| cut -d: -f1 \
 		| sort -u \
 		| xargs -rt apt-mark manual
-	#apt-get purge pkg-config autoconf build-essential -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-	#rm -rf /var/lib/apt/lists/*
 RUN echo 'extension=redis.so' >> /opt/bitnami/php/lib/php.ini
 RUN sed -i -r 's/#LoadModule ext_filter_module/LoadModule ext_filter_module/' /opt/bitnami/apache/conf/httpd.conf
 RUN sed -i -r 's/#LoadModule expires_module/LoadModule expires_module/' /opt/bitnami/apache/conf/httpd.conf
 RUN apt-get update && apt-get upgrade -y && \
     rm -r /var/lib/apt/lists /var/cache/apt/archives
-COPY ./app-entrypoint.sh /app-entrypoint.sh
+COPY ./post-init.sh /post-init.d/user-init.sh
 COPY ./ImageMagick.tar.gz /ImageMagick.tar.gz
 RUN tar xvzf ImageMagick.tar.gz
 RUN cd ImageMagick-7.1.0-4
@@ -45,13 +41,18 @@ RUN make
 RUN make install
 RUN ldconfig /usr/local/lib
 RUN pecl install imagick
-#RUN make check
+COPY ./updraftplus.zip /updraftplus.zip
 RUN apt-get purge pkg-config autoconf build-essential -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
 RUN rm -rf /var/lib/apt/lists/*
 RUN chown 1001:1001 /opt/bitnami/wordpress/wp-content
 RUN chown 1001:1001 /opt/bitnami/wordpress/wp-config.php
-RUN chmod 755 /app-entrypoint.sh
 RUN rm -r -d -f /opt/bitnami/wordpress/wp-content/uploads/*
+COPY ./entrypoint.sh /opt/bitnami/scripts/wordpress/entrypoint.sh
+RUN chmod 775 /opt/bitnami/scripts/wordpress/entrypoint.sh
+RUN chmod 775 /post-init.d/user-init.sh
+EXPOSE 8080 8443
 USER 1001
 RUN chmod 755 /opt/bitnami/wordpress/wp-content
 RUN chmod 775 /opt/bitnami/wordpress/wp-config.php
+ENTRYPOINT [ "/opt/bitnami/scripts/wordpress/entrypoint.sh" ]
+CMD [ "/opt/bitnami/scripts/apache/run.sh" ]
