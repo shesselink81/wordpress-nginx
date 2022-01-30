@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ ! -f "/opt/bitnami/wordpress/.user_scripts1_initialized" ]]; then
+if [[ ! -f "/opt/bitnami/wordpress/wp-content/.user_scripts1_initialized" ]]; then
     chmod 775 /opt/bitnami/wordpress/wp-config.php
     wp plugin install /updraftplus.zip --activate
     wp plugin delete all-in-one-seo-pack
@@ -16,5 +16,5 @@ if [[ ! -f "/opt/bitnami/wordpress/.user_scripts1_initialized" ]]; then
     echo php_value memory_limit 512M >> /opt/bitnami/wordpress/.htaccess
     echo php_value max_execution_time 600 >> /opt/bitnami/wordpress/.htaccess
     echo php_value max_input_time 600 >> /opt/bitnami/wordpress/.htaccess
-    touch "/opt/bitnami/wordpress/.user_scripts1_initialized"
+    touch "/opt/bitnami/wordpress/wp-content/.user_scripts1_initialized"
 fi

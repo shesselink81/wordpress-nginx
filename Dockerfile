@@ -32,15 +32,15 @@ RUN sed -i -r 's/#LoadModule expires_module/LoadModule expires_module/' /opt/bit
 RUN apt-get update && apt-get upgrade -y && \
     rm -r /var/lib/apt/lists /var/cache/apt/archives
 COPY ./post-init.sh /post-init.d/user-init.sh
-COPY ./ImageMagick.tar.gz /ImageMagick.tar.gz
-RUN tar xvzf ImageMagick.tar.gz
-RUN cd ImageMagick-7.1.0-4
-RUN chmod 755 /ImageMagick-7.1.0-4/configure
-RUN sh /ImageMagick-7.1.0-4/configure --with-modules
-RUN make
-RUN make install
-RUN ldconfig /usr/local/lib
-RUN pecl install imagick
+#COPY ./ImageMagick.tar.gz /ImageMagick.tar.gz
+#RUN tar xvzf ImageMagick.tar.gz
+#RUN cd ImageMagick-7.1.0-4
+#RUN chmod 755 /ImageMagick-7.1.0-4/configure
+#RUN sh /ImageMagick-7.1.0-4/configure --with-modules
+#RUN make
+#RUN make install
+#RUN ldconfig /usr/local/lib
+#RUN pecl install imagick
 COPY ./updraftplus.zip /updraftplus.zip
 RUN apt-get purge pkg-config autoconf build-essential -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
 RUN rm -rf /var/lib/apt/lists/*
