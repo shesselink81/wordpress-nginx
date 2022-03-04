@@ -11,10 +11,5 @@ if [[ ! -f "/opt/bitnami/wordpress/wp-content/.user_scripts1_initialized" ]]; th
     wp plugin auto-updates enable --all
     wp plugin activate --all
     wp config delete WP_AUTO_UPDATE_CORE
-    echo php_value upload_max_filesize 256M > /opt/bitnami/wordpress/.htaccess
-    echo php_value post_max_size 256M >> /opt/bitnami/wordpress/.htaccess
-    echo php_value memory_limit 512M >> /opt/bitnami/wordpress/.htaccess
-    echo php_value max_execution_time 600 >> /opt/bitnami/wordpress/.htaccess
-    echo php_value max_input_time 600 >> /opt/bitnami/wordpress/.htaccess
     touch "/opt/bitnami/wordpress/wp-content/.user_scripts1_initialized"
 fi

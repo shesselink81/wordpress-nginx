@@ -27,5 +27,6 @@ if [[ "$1" = "/opt/bitnami/scripts/$(web_server_type)/run.sh" || "$1" = "/opt/bi
     /post-init.sh
     info "** WordPress setup finished! **"
 fi
+
 echo ""
 exec "$@"
