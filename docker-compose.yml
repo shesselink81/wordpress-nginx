@@ -9,7 +9,7 @@ services:
       - MARIADB_DATABASE=bitnami_wordpress
       - ALLOW_EMPTY_PASSWORD=yes
   wordpress:
-    image: 'quay.io/shesselink81/wordpress-nginx:latest'
+    image: 'quay.io/shesselink81/wordpress-nginx:v5.9.1.1'
     ports:
       - '8443:8443'
     volumes:
