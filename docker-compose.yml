@@ -8,27 +8,31 @@ services:
       - MARIADB_USER=bn_wordpress
       - MARIADB_DATABASE=bitnami_wordpress
       - ALLOW_EMPTY_PASSWORD=yes
+  memcached:
+    image: docker.io/bitnami/memcached
   wordpress:
     image: 'quay.io/shesselink81/wordpress-nginx:v5.9.2.2'
     ports:
-      - '8443:8443'
+      - '443:8443'
+      - '80:8080'
     volumes:
       - 'wordpress_data:/bitnami/wordpress'
     depends_on:
       - mariadb
+      - memcached
     environment:
       - MARIADB_HOST=mariadb
       - MARIADB_PORT_NUMBER=3306
       - WORDPRESS_DATABASE_USER=bn_wordpress
       - WORDPRESS_DATABASE_NAME=bitnami_wordpress
       - ALLOW_EMPTY_PASSWORD=yes
-      - WORDPRESS_HTACCESS_OVERRIDE_NONE=no
-      - WORDPRESS_HTACCESS_PERSISTENCE_ENABLED=yes
       - WORDPRESS_ENABLE_HTTPS=yes
       - WORDPRESS_SCHEME=https
       - WORDPRESS_AUTO_UPDATE_LEVEL=minor
       - NGINX_HTTPS_PORT_NUMBER=8443
       - NGINX_HTTP_PORT_NUMBER=8080
+      - APACHE_HTTP_PORT_NUMBER=8080
+      - APACHE_HTTPS_PORT_NUMBER=8443
 volumes:
   mariadb_data:
     driver: local
