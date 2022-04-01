@@ -6,8 +6,6 @@ COPY ./updraftplus.zip /updraftplus.zip
 RUN chown 1001:1001 /opt/bitnami/wordpress/wp-content
 RUN chown 1001:1001 /opt/bitnami/wordpress/wp-config.php
 RUN rm -r -d -f /opt/bitnami/wordpress/wp-content/uploads/*
-COPY ./nginx.conf /opt/bitnami/nginx/conf/nginx.conf
-RUN chmod 775 /opt/bitnami/nginx/conf/nginx.conf
 EXPOSE 8080 8443
 USER 1001
 RUN chmod 755 /opt/bitnami/wordpress/wp-content
