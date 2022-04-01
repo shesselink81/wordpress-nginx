@@ -27,6 +27,8 @@ services:
       - WORDPRESS_ENABLE_HTTPS=yes
       - WORDPRESS_SCHEME=https
       - WORDPRESS_AUTO_UPDATE_LEVEL=minor
+      - NGINX_HTTPS_PORT_NUMBER=8443
+      - NGINX_HTTP_PORT_NUMBER=8080
 volumes:
   mariadb_data:
     driver: local
