@@ -26,7 +26,7 @@ Version info:
 
 * Wordpress version:  5.9.3
 * Nginx version:      1.21
-* PHP version:        8.0
+* PHP version:        7.4
 
 Installed php extensions:
 
