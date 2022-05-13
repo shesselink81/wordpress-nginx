@@ -1,4 +1,4 @@
-FROM quay.io/bitnami/wordpress-nginx
+FROM bitnami/wordpress-nginx:latest
 LABEL maintainer "Bitnami <containers@bitnami.com>"
 USER 0
 RUN apt-get update && apt-get install -y --no-install-recommends nano wget net-tools iputils-ping
