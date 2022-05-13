@@ -1,7 +1,7 @@
 FROM bitnami/wordpress-nginx:latest
 LABEL maintainer "Bitnami <containers@bitnami.com>"
 USER 0
-RUN apt-get update && apt-get install -y --no-install-recommends nano wget net-tools iputils-ping
+#RUN apt-get update && apt-get install -y --no-install-recommends nano wget net-tools iputils-ping
 COPY ./updraftplus.zip /updraftplus.zip
 RUN chown 1001:1001 /opt/bitnami/wordpress/wp-content
 RUN chown 1001:1001 /opt/bitnami/wordpress/wp-config.php
