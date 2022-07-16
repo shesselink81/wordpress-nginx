@@ -24,19 +24,11 @@ Docker images:
 
 Version info:
 
-* Wordpress version:  6.0
-* Nginx version:      1.21
+* Wordpress version:  6.0.1
+* Nginx version:      1.22
 * PHP version:        8.0
 
 Installed php extensions:
 
 * memcached v1.6
 * imagick v3.7
-  
-Installed extra packages:
-
-* nano
-* wget
-* net-tools
-* iputils-ping
-* unzip
