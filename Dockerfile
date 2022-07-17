@@ -5,6 +5,7 @@ USER 0
 COPY ./updraftplus.zip /updraftplus.zip
 RUN chown 1001:1001 /opt/bitnami/wordpress/wp-content
 RUN chown 1001:1001 /opt/bitnami/wordpress/wp-config.php
+RUN chown 1001:1001 /usr/local/share/ca-certificates/
 RUN rm -r -d -f /opt/bitnami/wordpress/wp-content/uploads/*
 EXPOSE 8080 8443
 USER 1001
