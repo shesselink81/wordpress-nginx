@@ -11,7 +11,7 @@ services:
   memcached:
     image: docker.io/bitnami/memcached
   wordpress:
-    image: 'quay.io/shesselink81/wordpress-nginx:v6.0.0.3'
+    image: 'quay.io/shesselink81/wordpress-nginx:v6.0.0.6'
     ports:
       - '443:8443'
       - '80:8080'
@@ -23,6 +23,8 @@ services:
     environment:
       - MARIADB_HOST=mariadb
       - MARIADB_PORT_NUMBER=3306
+      - WORDPRESS_USER=user
+      - WORDPRESS_PASSWORD=user
       - WORDPRESS_DATABASE_USER=bn_wordpress
       - WORDPRESS_DATABASE_NAME=bitnami_wordpress
       - ALLOW_EMPTY_PASSWORD=yes
