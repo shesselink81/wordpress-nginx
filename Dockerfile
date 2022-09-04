@@ -1,4 +1,4 @@
-FROM bitnami/wordpress-nginx:6.0.1-debian-11-r18
+FROM bitnami/wordpress-nginx:6.0.2-debian-11-r2
 USER 0
 RUN apt-get remove curl -y && apt-get autoremove -y && apt-get clean -y && apt-get autoclean -y && rm -rf /var/lib/apt/lists/*
 COPY ./updraftplus.zip /updraftplus.zip
