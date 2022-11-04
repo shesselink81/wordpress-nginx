@@ -1,4 +1,4 @@
-FROM bitnami/wordpress-nginx:6.0.2-debian-11-r2
+FROM bitnami/wordpress-nginx:6.1.0
 USER 0
 RUN apt-get remove curl -y && apt-get autoremove -y && apt-get clean -y && apt-get autoclean -y && rm -rf /var/lib/apt/lists/*
 RUN apt-get update && apt-get install -y --no-install-recommends nano wget
