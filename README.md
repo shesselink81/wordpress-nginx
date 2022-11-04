@@ -24,7 +24,7 @@ Docker images:
 
 Version info:
 
-* Wordpress version:  6.0.2.3
+* Wordpress version:  6.1
 * Nginx version:      1.23
 * PHP version:        8.0
 
