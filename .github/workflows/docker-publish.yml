@@ -5,7 +5,7 @@ on:
     - cron: "0 10 * * *"
   push:
     tags:
-      - "v*.*.*.*"
+      - "v*.*.*"
   pull_request:
     branches:
       - "main"
@@ -27,9 +27,11 @@ jobs:
             quay.io/shesselink81/wordpress-nginx
           # generate Docker tags based on the following events/attributes
           tags: |
+            type=schedule
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
+            type=sha
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
