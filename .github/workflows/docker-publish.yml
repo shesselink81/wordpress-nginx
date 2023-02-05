@@ -95,4 +95,4 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         # run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
-        run: echo "ghcr.io/shesselink81/wordpress-nginx" | xargs -I {} cosign sign {}@sha256:29cbaa9a9ae1646e5d2818733d62d986dbc809e121e54d4cf20c4bcc7ac8e7c3
+        run: cosign sign ghcr.io/shesselink81/wordpress-nginx@sha256:29cbaa9a9ae1646e5d2818733d62d986dbc809e121e54d4cf20c4bcc7ac8e7c3
