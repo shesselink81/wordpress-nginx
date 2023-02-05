@@ -24,7 +24,7 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            ghcr.io/shesselink81/wordpress-nginx
+            quay.io/shesselink81/wordpress-nginx
           # generate Docker tags based on the following events/attributes
           tags: |
             type=schedule
@@ -39,13 +39,13 @@ jobs:
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       -
-        name: Login to GHCR
+        name: Login to QUAY
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v2
         with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: quay.io
+          username: shesselink81
+          password: 5EsNhfcviK3kficPNsE3JdVRdZ9MlesuZwqYdmEaxfsIuKFkGDrXFFtBG6LpIZgolntVxsSLuS/IrNDOYBm44Q==
       -
         name: Build and push
         uses: docker/build-push-action@v4
