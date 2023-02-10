@@ -76,8 +76,8 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          platforms: linux/amd64,linux/arm64
-          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=Wordpress NGINX multi image
+          platforms: linux/amd64
+          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=Wordpress NGINX AMD64 image
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
