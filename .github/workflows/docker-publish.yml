@@ -81,7 +81,7 @@ jobs:
           #tags: ${{ steps.meta.outputs.tags }}
           tags: ${{ env.LATEST_TAG }}
           labels: ${{ steps.meta.outputs.labels }}
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
