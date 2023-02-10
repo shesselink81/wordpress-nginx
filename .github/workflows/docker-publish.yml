@@ -8,7 +8,10 @@ name: Docker
 on:
   schedule:
     - cron: '27 2 * * *'
+
   push:
+    branches:
+      - "main"
     tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ "main" ]
@@ -18,6 +21,7 @@ env:
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
+  LATEST_TAG: ${{ env.IMAGE_NAME }}:latest
 
 
 jobs:
@@ -74,10 +78,10 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
+          #tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ env.LATEST_TAG }}
           labels: ${{ steps.meta.outputs.labels }}
-          platforms: linux/amd64
-          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=Wordpress NGINX AMD64 image
+          platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
