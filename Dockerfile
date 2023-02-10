@@ -5,5 +5,7 @@ RUN apt-get autoremove -y && apt-get clean -y && apt-get autoclean -y && rm -rf 
 COPY ./updraftplus.zip /updraftplus.zip
 RUN chown 1001:1001 /opt/bitnami/wordpress/wp-content && chown 1001:1001 /opt/bitnami/wordpress/wp-config.php && chown 1001:1001 /usr/local/share/ca-certificates/ && chown 1001:1001 /etc/ssl/certs/ && rm -r -d -f /opt/bitnami/wordpress/wp-content/uploads/*
 EXPOSE 8080 8443
+LABEL org.opencontainers.image.description Bitnami Wordpress nginx
+
 USER 1001
 RUN chmod 755 /opt/bitnami/wordpress/wp-content && chmod 775 /opt/bitnami/wordpress/wp-config.php
