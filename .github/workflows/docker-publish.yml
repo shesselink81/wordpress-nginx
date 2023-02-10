@@ -21,7 +21,7 @@ env:
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
-  LATEST_TAG: ${{ github.repository }}:latest
+  LATEST_TAG: ghcr.io/${{ github.repository }}:latest
 
 
 jobs:
