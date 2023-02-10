@@ -9,8 +9,6 @@ on:
   schedule:
     - cron: '27 2 * * *'
   push:
-    branches: [ "main" ]
-    # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ "main" ]
@@ -78,8 +76,8 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          platforms: ${{ matrix.platforms }}
-          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=My multi-arch image
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=Wordpress NGINX multi image
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
