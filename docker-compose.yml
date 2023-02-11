@@ -11,7 +11,7 @@ services:
   memcached:
     image: docker.io/bitnami/memcached
   wordpress:
-    image: 'quay.io/shesselink81/wordpress-nginx:v6.1.1.6'
+    image: 'ghcr.io/shesselink81/wordpress-nginx:latest'
     ports:
       - '443:8443'
       - '80:8080'
@@ -33,8 +33,6 @@ services:
       - WORDPRESS_AUTO_UPDATE_LEVEL=minor
       - NGINX_HTTPS_PORT_NUMBER=8443
       - NGINX_HTTP_PORT_NUMBER=8080
-      - APACHE_HTTP_PORT_NUMBER=8080
-      - APACHE_HTTPS_PORT_NUMBER=8443
 volumes:
   mariadb_data:
     driver: local
