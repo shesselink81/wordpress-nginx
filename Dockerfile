@@ -1,4 +1,4 @@
-FROM bitnami/wordpress-nginx:6.1.1
+FROM bitnami/wordpress-nginx:latest
 USER 0
 RUN apt-get update && apt-get install -y --no-install-recommends nano wget
 RUN apt-get autoremove -y && apt-get clean -y && apt-get autoclean -y && rm -rf /var/lib/apt/lists/*
