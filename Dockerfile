@@ -1,4 +1,4 @@
-FROM bitnami/wordpress-nginx:latest
+FROM bitnami/wordpress-nginx:6.1.1-debian-11-r52
 USER root
 RUN apt-get update && apt-get install -y --no-install-recommends nano wget
 RUN apt-get autoremove -y && apt-get clean -y && apt-get autoclean -y && rm -rf /var/lib/apt/lists/*
