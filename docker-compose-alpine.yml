@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  wordpress:
+    image: quay.io/shesselink81/wordpress-nginx:alpine-latest
+    environment:
+      VIRTUAL_HOST: dev.hessel.cloud
+      DB_NAME: wordpressdb
+      DB_USER: wordpressuser
+      DB_PASS: hguyFt6S95dgfR4ryb
+      DB_HOST: mysql
+      WORDPRESS_USER: user
+      WORDPRESS_PASSWORD: user
+      WORDPRESS_EMAIL: user@example.com
+      WORDPRESS_AUTO_UPDATE_LEVEL: minor
+    ports:
+      - '80:80'
+    restart: always
+    depends_on:
+      - mysql
+  mysql:
+    environment:
+      MYSQL_ROOT_PASSWORD: hguyFtgfR4r9R4r76
+      MYSQL_DATABASE: wordpressdb
+      MYSQL_USER: wordpressuser
+      MYSQL_PASSWORD: hguyFt6S95dgfR4ryb
+    image: yobasystems/alpine-mariadb

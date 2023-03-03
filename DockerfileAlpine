@@ -1,0 +1,12 @@
+FROM yobasystems/alpine-php-wordpress:latest
+RUN mkdir -p /usr/html
+RUN mkdir -p /var/lib/nginx/logs
+RUN mkdir -p /usr/logs
+RUN chown -R nginx:nginx /usr/html
+RUN chown -R nginx:nginx /usr/logs
+RUN chown nginx /var/run
+RUN chown -R nginx:nginx /var/lib/nginx/logs
+RUN rm /sbin/php-fpm
+RUN ln -s /usr/sbin/php-fpm8 /sbin/php-fpm
+RUN ln -s /usr/sbin/php-fpm8 /sbin/php-fpm7
+RUN cd /usr/html && wp-cli core download --locale=en_GB
