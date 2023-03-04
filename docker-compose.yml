@@ -7,11 +7,13 @@ services:
     environment:
       - MARIADB_USER=bn_wordpress
       - MARIADB_DATABASE=bitnami_wordpress
-      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_PASSWORD=3RFTzI71P%btPi9y4#D8
+      - ALLOW_EMPTY_PASSWORD=no
+      - MARIADB_ROOT_PASSWORD=^91L99TP7IiNCPxk%nj8
   memcached:
     image: docker.io/bitnami/memcached
   wordpress:
-    image: 'quay.io/shesselink81/wordpress-nginx:v6.1.1.17'
+    image: 'quay.io/shesselink81/wordpress-nginx:v6.1.1.18'
     ports:
       - '443:8443'
       - '80:8080'
@@ -24,10 +26,11 @@ services:
       - MARIADB_HOST=mariadb
       - MARIADB_PORT_NUMBER=3306
       - WORDPRESS_USER=user
-      - WORDPRESS_PASSWORD=user
+      - WORDPRESS_PASSWORD=fW4URJ*rT9PrP!OA@U@M
       - WORDPRESS_DATABASE_USER=bn_wordpress
+      - WORDPRESS_DATABASE_PASSWORD=3RFTzI71P%btPi9y4#D8
       - WORDPRESS_DATABASE_NAME=bitnami_wordpress
-      - ALLOW_EMPTY_PASSWORD=yes
+      - ALLOW_EMPTY_PASSWORD=no
       - WORDPRESS_ENABLE_HTTPS=yes
       - WORDPRESS_SCHEME=https
       - WORDPRESS_AUTO_UPDATE_LEVEL=minor
