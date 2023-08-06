@@ -41,7 +41,6 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            bitnami/wordpress-nginx
             {{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           # generate Docker tags based on the following events/attributes
           tags: |
