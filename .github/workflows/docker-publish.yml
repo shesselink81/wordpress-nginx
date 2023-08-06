@@ -41,12 +41,6 @@ jobs:
         with:
           images: |
             ${{ github.actor }}/${{ github.repository }}
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=sha
       -
         # Add support for more platforms with QEMU (optional)
         # https://github.com/docker/setup-qemu-action
