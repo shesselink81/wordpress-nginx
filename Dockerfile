@@ -1,4 +1,6 @@
 FROM bitnami/wordpress-nginx:latest
+LABEL org.opencontainers.image.source=https://github.com/shesselink81/wordpress-nginx
+LABEL org.opencontainers.image.description="Custom wordpress 6.3.0 image with php 8.2, nginx, memcached"
 USER 0
 RUN install_packages nano wget
 COPY ./updraftplus.zip /updraftplus.zip
