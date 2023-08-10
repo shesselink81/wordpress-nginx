@@ -1,4 +1,7 @@
 version: '3.8'
+volumes:
+  db-data:
+  wp-data:
 services:
   wordpress:
     image: quay.io/shesselink81/wordpress-nginx:alpine-latest
@@ -15,8 +18,11 @@ services:
     ports:
       - '80:80'
     restart: always
+    volumes:
+      - wp-data:/usr/html
     depends_on:
       - mysql
+      - memcached
   mysql:
     environment:
       MYSQL_ROOT_PASSWORD: hguyFtgfR4r9R4r76
@@ -24,3 +30,7 @@ services:
       MYSQL_USER: wordpressuser
       MYSQL_PASSWORD: hguyFt6S95dgfR4ryb
     image: yobasystems/alpine-mariadb
+    volumes:
+      - db-data:/var/lib/mysql
+  memcached:
+    image: docker.io/bitnami/memcached
