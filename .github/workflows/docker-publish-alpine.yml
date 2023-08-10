@@ -42,6 +42,8 @@ jobs:
           images: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
             quay.io/shesselink81/wordpress-nginx
+          flavor: |
+            latest=false
       -
         # Add support for more platforms with QEMU (optional)
         # https://github.com/docker/setup-qemu-action
