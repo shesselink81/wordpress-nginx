@@ -10,7 +10,7 @@ on:
     - cron: '27 2 * * *'
 
   push:
-    tags: [ 'v*' ]
+    tags: [ 'alpine-v*' ]
   pull_request:
     branches: [ "main" ]
 
