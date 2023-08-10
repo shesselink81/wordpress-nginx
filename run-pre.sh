@@ -14,6 +14,9 @@ wp-cli plugin install spotify-play-button-for-wordpress
 wp-cli plugin install youtube-embed-plus
 wp-cli plugin activate w3-total-cache
 wp-cli total-cache fix_environment
+wp-cli total-cache option set dbcache.engine memcached --type=string
+wp-cli total-cache option set objectcache.engine memcached --type=string
+wp-cli total-cache flush all
 wp-cli total-cache option set dbcache.memcached.servers memcached:11211 --type=string
 wp-cli total-cache option set dbcache.enabled true --type=boolean
 wp-cli total-cache option set objectcache.memcached.servers memcached:11211 --type=string
