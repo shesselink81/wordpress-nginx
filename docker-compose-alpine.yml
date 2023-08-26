@@ -4,7 +4,7 @@ volumes:
   wp-data:
 services:
   wordpress:
-    image: quay.io/shesselink81/wordpress-nginx:alpine-dev
+    image: quay.io/shesselink81/wordpress-nginx:alpine-v6.3.0.6
     environment:
       VIRTUAL_HOST: dev.hessel.cloud
       DB_NAME: wordpressdb

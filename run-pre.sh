@@ -5,7 +5,7 @@ mkdir -p /usr/html
 ln -s /usr/html /opt/bitnami/wordpress
 cd /usr/html
 wp-cli core download --locale=en_GB
-wp-cli config create --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASS --dbhost=$DB_HOST --locale=en_GB
+wp-cli config create --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASS --dbhost=$DB_HOST --skip-check --locale=en_GB
 wp-cli core install --url=$VIRTUAL_HOST --title=Example --admin_user=$WORDPRESS_USER --admin_password=$WORDPRESS_PASSWORD --admin_email=$WORDPRESS_EMAIL
 wp-cli plugin install https://updraftplus.com/wp-content/uploads/updraftplus.zip
 wp-cli plugin install w3-total-cache
