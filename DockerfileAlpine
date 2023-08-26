@@ -2,4 +2,4 @@ FROM yobasystems/alpine-php-wordpress
 ADD run-pre.sh /
 RUN chmod +x /run-pre.sh
 RUN chmod +x /run.sh
-RUN apk add php81-pecl-imagick libmemcached memcached php81-pecl-memcached
+RUN apk add libmemcached memcached php81-pecl-memcached
