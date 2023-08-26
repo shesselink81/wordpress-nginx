@@ -1,4 +1,5 @@
 #!/bin/sh
+
 mkdir -p /opt/bitnami
 mkdir -p /usr/html
 ln -s /usr/html /opt/bitnami/wordpress
