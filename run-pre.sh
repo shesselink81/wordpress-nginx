@@ -1,5 +1,7 @@
 #!/bin/sh
-
+mkdir -p /opt/bitnami
+mkdir -p /usr/html
+ln -s /usr/html /opt/bitnami/wordpress
 cd /usr/html
 wp-cli core download --locale=en_GB
 wp-cli config create --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASS --dbhost=$DB_HOST --locale=en_GB
