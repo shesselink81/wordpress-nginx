@@ -1,4 +1,4 @@
-FROM bitnami/wordpress-nginx:latest
+FROM bitnami/wordpress-nginx:6.8.1
 LABEL org.opencontainers.image.source https://github.com/shesselink81/wordpress-nginx
 LABEL org.opencontainers.image.description "Custom wordpress 6.3.0 image with php 8.2, nginx, memcached"
 USER 0
