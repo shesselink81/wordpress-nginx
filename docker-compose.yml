@@ -1,41 +1,66 @@
 version: '3.8'
 services:
   mariadb:
-    image: 'bitnami/mariadb'
+    image: 'docker.io/mariadb:12.0.2-noble'
     volumes:
-      - 'mariadb_data:/bitnami/mariadb'
+      - 'mariadb_data:/var/lib/mysql'
     environment:
-      - MARIADB_USER=bn_wordpress
-      - MARIADB_DATABASE=bitnami_wordpress
-      - MARIADB_PASSWORD=3RFTzI71P%btPi9y4#D8
-      - ALLOW_EMPTY_PASSWORD=no
-      - MARIADB_ROOT_PASSWORD=^91L99TP7IiNCPxk%nj8
+      - MARIADB_USER=db
+      - MARIADB_DATABASE=test
+      - MARIADB_PASSWORD=x3RnucrxGSCRj0mU
+      #- ALLOW_EMPTY_PASSWORD=no
+      - MARIADB_ROOT_PASSWORD=x3RnucrxGSCRj0mU
   memcached:
-    image: docker.io/bitnami/memcached
-  wordpress:
-    image: 'quay.io/shesselink81/wordpress-nginx:v6.3.0.6'
+    image: docker.io/memcached:1.6.39
+  wordpress-init:
+    image: 'ghcr.io/shesselink81/wordpress-nginx:v6.8.3.2'
     ports:
-      - '443:8443'
-      - '80:8080'
+      #- '8443:443'
+      - '8090:80'
+    command: /tmp/init.sh
     volumes:
-      - 'wordpress_data:/bitnami/wordpress'
+      - 'wordpress_data:/var/www/html'
+      - ./init.sh:/tmp/init.sh
     depends_on:
       - mariadb
-      - memcached
     environment:
-      - MARIADB_HOST=mariadb
+      - MARIADB_HOST=mariadb-1
       - MARIADB_PORT_NUMBER=3306
       - WORDPRESS_USER=user
       - WORDPRESS_PASSWORD=fW4URJ*rT9PrP!OA@U@M
-      - WORDPRESS_DATABASE_USER=bn_wordpress
-      - WORDPRESS_DATABASE_PASSWORD=3RFTzI71P%btPi9y4#D8
-      - WORDPRESS_DATABASE_NAME=bitnami_wordpress
-      - ALLOW_EMPTY_PASSWORD=no
-      - WORDPRESS_ENABLE_HTTPS=yes
-      - WORDPRESS_SCHEME=https
+      - WORDPRESS_DATABASE_USER=db
+      - WORDPRESS_DATABASE_PASSWORD=x3RnucrxGSCRj0mU
+      - WORDPRESS_DATABASE_NAME=test
+      #- ALLOW_EMPTY_PASSWORD=no
+      - WORDPRESS_ENABLE_HTTPS=no
+      - WORDPRESS_SCHEME=http
       - WORDPRESS_AUTO_UPDATE_LEVEL=minor
-      - NGINX_HTTPS_PORT_NUMBER=8443
-      - NGINX_HTTP_PORT_NUMBER=8080
+      #- NGINX_HTTPS_PORT_NUMBER=8443
+      #- NGINX_HTTP_PORT_NUMBER=8080  
+  wordpress:
+    image: 'ghcr.io/shesselink81/wordpress-nginx:v6.8.3.2'
+    ports:
+      #- '8443:443'
+      - '8090:80'
+    volumes:
+      - 'wordpress_data:/var/www/html'
+    depends_on:
+      - wordpress-init
+      - memcached
+    environment:
+      - MARIADB_HOST=mariadb-1
+      - MARIADB_PORT_NUMBER=3306
+      - WORDPRESS_USER=user
+      - WORDPRESS_PASSWORD=fW4URJ*rT9PrP!OA@U@M
+      - WORDPRESS_DATABASE_USER=db
+      - WORDPRESS_DATABASE_PASSWORD=x3RnucrxGSCRj0mU
+      - WORDPRESS_DATABASE_NAME=test
+      #- ALLOW_EMPTY_PASSWORD=no
+      - WORDPRESS_ENABLE_HTTPS=no
+      - WORDPRESS_SCHEME=http
+      - WORDPRESS_AUTO_UPDATE_LEVEL=minor
+      #- NGINX_HTTPS_PORT_NUMBER=8443
+      #- NGINX_HTTP_PORT_NUMBER=8080
 volumes:
   mariadb_data:
     driver: local
