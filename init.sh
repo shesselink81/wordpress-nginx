@@ -58,10 +58,10 @@ fi
 # Memcached ondersteuning inschakelen
 if ping -c 1 memcached &>/dev/null; then
   echo "💾 Memcached server gevonden, plugin installeren..."
-  # if ! php -d memory_limit=512M /usr/local/bin/wp plugin is-installed memcached --path="${WP_PATH}" --allow-root; then
-  #   php -d memory_limit=512M /usr/local/bin/wp plugin install memcached --allow-root --path="${WP_PATH}"
-  # else
-  #   php -d memory_limit=512M /usr/local/bin/wp plugin activate memcached --allow-root --path="${WP_PATH}" || true
+  if ! php -d memory_limit=512M /usr/local/bin/wp plugin is-installed w3-total-cache --path="${WP_PATH}" --allow-root; then
+    php -d memory_limit=512M /usr/local/bin/wp plugin install w3-total-cache --activate --allow-root --path="${WP_PATH}"
+  else
+    php -d memory_limit=512M /usr/local/bin/wp plugin activate w3-total-cache --allow-root --path="${WP_PATH}" || true
   fi
 
   # Voeg caching aan wp-config toe (indien nog niet aanwezig)
@@ -74,8 +74,8 @@ if ping -c 1 memcached &>/dev/null; then
   fi
 
   echo "✅ Memcached caching geconfigureerd."
-# else
-#   echo "⚠️  Geen memcached service bereikbaar — overslaan caching setup."
+else
+  echo "⚠️  Geen memcached service bereikbaar — overslaan caching setup."
 fi
 
 # File permissies herstellen
