@@ -58,8 +58,8 @@ fi
 # Memcached ondersteuning inschakelen
 if ping -c 1 memcached &>/dev/null; then
   echo "💾 Memcached server gevonden, plugin installeren..."
-  if ! php -d memory_limit=512M /usr/local/bin/wp plugin is-installed memcached --path="${WP_PATH}" --allow-root; then
-    php -d memory_limit=512M /usr/local/bin/wp plugin install memcached --allow-root --path="${WP_PATH}"
+  # if ! php -d memory_limit=512M /usr/local/bin/wp plugin is-installed memcached --path="${WP_PATH}" --allow-root; then
+  #   php -d memory_limit=512M /usr/local/bin/wp plugin install memcached --allow-root --path="${WP_PATH}"
   # else
   #   php -d memory_limit=512M /usr/local/bin/wp plugin activate memcached --allow-root --path="${WP_PATH}" || true
   fi
