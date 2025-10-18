@@ -74,8 +74,8 @@ if ping -c 1 memcached &>/dev/null; then
   fi
 
   echo "✅ Memcached caching geconfigureerd."
-else
-  echo "⚠️  Geen memcached service bereikbaar — overslaan caching setup."
+# else
+#   echo "⚠️  Geen memcached service bereikbaar — overslaan caching setup."
 fi
 
 # File permissies herstellen
