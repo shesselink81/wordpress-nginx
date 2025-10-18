@@ -1,195 +1,86 @@
 #!/bin/bash
-echo "Starting init script..."
+set -euo pipefail
 
-# WP-CLI wrapper: always set path, and append --debug when DEBUG=true
-wp() {
-  if [ "${DEBUG}" = "true" ]; then
-    command wp --path="${WORDPRESS_PATH}" --debug "$@"
-  else
-    command wp --path="${WORDPRESS_PATH}" "$@"
-  fi
-}
+echo "=== WordPress init script started ==="
 
-# Helper to run commands with optional output suppression.
-# If DEBUG is true, run the command verbosely; otherwise suppress stdout+stderr.
-run() {
-  if [ "${DEBUG}" = "true" ]; then
-    "$@"
-  else
-    "$@" >/dev/null 2>&1
-  fi
-}
+# Zet veilige defaults
+export WP_PATH="/var/www/html"
+#export WP_CLI_PHP_ARGS="-d memory_limit=512M"
+export WP_URL="${WP_URL:-http://192.168.30.177:8090}"
 
-# Wait for database to be ready
-echo "Waiting for database..."
-until run wp db check; do
-  echo "Database not ready yet, waiting 15 seconds..."
-  sleep 15
+# Controleer database connectie voordat we verdergaan
+echo "⏳ Wachten op database (${WORDPRESS_DB_HOST})..."
+until mariadb-admin ping -h"${WORDPRESS_DB_HOST}" -u"${WORDPRESS_DB_USER}" -p"${WORDPRESS_DB_PASSWORD}" --silent; do
+  sleep 2
 done
+echo "✅ Database bereikbaar!"
 
-# wait to get ready
-# sleep 20
-# Activate maintenance mode during setup
-if ! run wp maintenance-mode is-active --url="${WP_URL}"; then
-  run wp maintenance-mode activate --force --url="${WP_URL}"
+# Controleer of WP al is geïnstalleerd
+if php -d memory_limit=512M /usr/local/bin/wp core is-installed --path="${WP_PATH}" --allow-root >/dev/null 2>&1; then
+  echo "ℹ️  WordPress is al geïnstalleerd — overslaan van init."
 else
-  run wp maintenance-mode status --url="${WP_URL}"
+  echo "🚀 Nieuwe WordPress installatie gestart..."
+
+  # Download core (indien nog niet aanwezig)
+  if [ ! -f "${WP_PATH}/wp-settings.php" ]; then
+    echo "⬇️  Downloaden van WordPress (${WP_LOCALE})..."
+    php -d memory_limit=512M /usr/local/bin/wp core download --path="${WP_PATH}" --locale="${WP_LOCALE}" --allow-root
+  fi
+
+  # Config aanmaken als hij nog niet bestaat
+  if [ ! -f "${WP_PATH}/wp-config.php" ]; then
+    echo "⚙️  Aanmaken wp-config.php..."
+    php -d memory_limit=512M /usr/local/bin/wp config create \
+      --path="${WP_PATH}" \
+      --dbname="${WORDPRESS_DB_NAME}" \
+      --dbuser="${WORDPRESS_DB_USER}" \
+      --dbpass="${WORDPRESS_DB_PASSWORD}" \
+      --dbhost="${WORDPRESS_DB_HOST}" \
+      --locale="${WP_LOCALE}" \
+      --allow-root
+  fi
+
+  # Installatie uitvoeren
+  echo "🧩 Installeren van WordPress..."
+  php -d memory_limit=512M /usr/local/bin/wp core install \
+    --path="${WP_PATH}" \
+    --url="${WP_URL}" \
+    --title="${WP_TITLE}" \
+    --admin_user="${WP_ADMIN_USER}" \
+    --admin_password="${WP_ADMIN_PASSWORD}" \
+    --admin_email="${WP_ADMIN_EMAIL}" \
+    --skip-email \
+    --allow-root
+
+  echo "✅ WordPress installatie voltooid!"
 fi
 
-# set up WordPress
-if [ "${WP_INIT}" = "true" ]; then
-  # Check if WordPress database is already installed
-  if ! run wp core is-installed --url="${WP_URL}"; then
-    echo "Setting up WordPress..."
-    run wp core install \
-      --url="${WP_URL}" \
-      --title="${WP_TITLE}" \
-      --admin_user="${WP_ADMIN_USER}" \
-      --admin_password="${WP_ADMIN_PASSWORD}" \
-      --admin_email="${WP_ADMIN_EMAIL}" \
-      --skip-email \
-      --locale="${WP_LOCALE}"
-  else
-    echo "WordPress is already installed, skipping installation."
+# Memcached ondersteuning inschakelen
+if ping -c 1 memcached &>/dev/null; then
+  echo "💾 Memcached server gevonden, plugin installeren..."
+  if ! php -d memory_limit=512M /usr/local/bin/wp plugin is-installed memcached --path="${WP_PATH}" --allow-root; then
+    php -d memory_limit=512M /usr/local/bin/wp plugin install memcached --allow-root --path="${WP_PATH}"
+  # else
+  #   php -d memory_limit=512M /usr/local/bin/wp plugin activate memcached --allow-root --path="${WP_PATH}" || true
   fi
 
-  # set up localization
-  if [ -n "${WP_LOCALE}" ]; then
-    # Set language if WordPress is already installed
-    LANG_STATUS=$(wp language core list --language=${WP_LOCALE} --field=status)
-    case $LANG_STATUS in
-      "uninstalled")
-        wp language core install ${WP_LOCALE} --activate
-        ;;
-      "installed")
-        wp site switch-language ${WP_LOCALE}
-        ;;
-    esac
+  # Voeg caching aan wp-config toe (indien nog niet aanwezig)
+  if ! grep -q "WP_CACHE" "${WP_PATH}/wp-config.php"; then
+    echo "define('WP_CACHE', true);" >> "${WP_PATH}/wp-config.php"
   fi
 
-  # Set Wordpress permalinks
-  echo "Setting WordPress permalinks..."
-  if [ ! -z "${WP_PERMALINK_STRUCTURE}" ]; then
-    wp rewrite structure "${WP_PERMALINK_STRUCTURE}"
-    wp rewrite flush
+  if ! grep -q "memcached_servers" "${WP_PATH}/wp-config.php"; then
+    echo "\$memcached_servers = array( 'default' => array('memcached:11211') );" >> "${WP_PATH}/wp-config.php"
   fi
 
-  # Set user metadata
-  echo "Setting user metadata..."
-  if [ ! -z "${WP_ADMIN_FIRSTNAME}" ]; then
-    wp user meta update "$WP_ADMIN_USER" first_name "$WP_ADMIN_FIRSTNAME"
-  fi
-  if [ ! -z "${WP_ADMIN_LASTNAME}" ]; then
-    wp user meta update "$WP_ADMIN_USER" last_name "$WP_ADMIN_LASTNAME"
-  fi
-fi
-
-# Handle WordPress users if specified
-echo "Creating custom users..."
-USER_USERNAME="johndoe"
-USER_EMAIL="johndoe@example.com"
-USER_DISPLAYNAME="john doe"
-USER_FIRSTNAME="john"
-USER_LASTNAME="doe"
-USER_ROLE="contributor"
-USER_SENDEMAIL=""
-
-# Check if user already exists
-if ! run wp user get "${USER_USERNAME}"; then
-  echo "Creating user ${USER_USERNAME}..."
-  run wp user create "${USER_USERNAME}" "${USER_EMAIL}" \
-    --role="${USER_ROLE}" \
-    --display_name="${USER_DISPLAYNAME}" \
-    --first_name="${USER_FIRSTNAME}" \
-    --last_name="${USER_LASTNAME}" \
-    --send-email="${USER_SENDEMAIL}"
+  echo "✅ Memcached caching geconfigureerd."
 else
-  echo "User ${USER_USERNAME} already exists, skipping."
+  echo "⚠️  Geen memcached service bereikbaar — overslaan caching setup."
 fi
 
+# File permissies herstellen
+echo "🧾 Herstellen van permissies..."
+chown -R 33:33 "${WP_PATH}"
+chmod 755 "${WP_PATH}"/*
 
-
-
-# Handle WordPress metrics plugin if specified
-if [ ! -z "${WORDPRESS_METRICS}" ]; then
-  # Check if plugin is installed
-  if run wp plugin is-installed ${WORDPRESS_METRICS}; then
-    if ! run wp plugin is-active ${WORDPRESS_METRICS}; then
-      run wp plugin activate ${WORDPRESS_METRICS}
-    fi
-  else
-    echo "Installing WordPress metrics plugin..."
-    wp plugin install ${WORDPRESS_METRICS} --activate --force
-  fi
-
-  # Enable auto-updates if disabled
-  AUTO_UPDATE_STATUS=$(wp plugin auto-updates status ${WORDPRESS_METRICS} --field=status 2>/dev/null)
-  if [ "$AUTO_UPDATE_STATUS" = "disabled" ]; then
-    run wp plugin auto-updates enable ${WORDPRESS_METRICS}
-  fi
-else
-  # Remove plugin if WORDPRESS_METRICS is empty
-  if run wp plugin is-installed ${WORDPRESS_METRICS}; then
-    wp plugin delete ${WORDPRESS_METRICS}
-  fi
-fi
-
-# Handle WordPress plugins if specified
-echo "Installing custom plugins..."
-PLUGIN_NAME="plugin-check"
-PLUGIN_VERSION=""
-PLUGIN_ACTIVATE="true"
-PLUGIN_AUTOUPDATE="true"
-
-# Check if plugin is installed
-if ! run wp plugin is-installed "${PLUGIN_NAME}"; then
-  # Install the plugin
-  if [ -n "${PLUGIN_VERSION}" ]; then
-    wp plugin install "${PLUGIN_NAME}" --version="${PLUGIN_VERSION}" --force
-  else
-    wp plugin install "${PLUGIN_NAME}" --force
-  fi
-fi
-
-# Activate if requested and not active
-if [ "${PLUGIN_ACTIVATE}" = "true" ] && ! run wp plugin is-active "${PLUGIN_NAME}"; then
-  run wp plugin activate "${PLUGIN_NAME}"
-fi
-
-# Enable auto-updates if requested and not enabled
-AUTO_UPDATE_STATUS=$(wp plugin auto-updates status "${PLUGIN_NAME}" --field=status 2>/dev/null)
-if [ "${PLUGIN_AUTOUPDATE}" = "true" ] && [ "$AUTO_UPDATE_STATUS" = "disabled" ]; then
-  run wp plugin auto-updates enable "${PLUGIN_NAME}"
-fi
-PLUGIN_NAME="https://updraftplus.com/wp-content/uploads/updraftplus.zip"
-PLUGIN_VERSION=""
-PLUGIN_ACTIVATE="true"
-PLUGIN_AUTOUPDATE="true"
-
-# Check if plugin is installed
-if ! run wp plugin is-installed "${PLUGIN_NAME}"; then
-  # Install the plugin
-  if [ -n "${PLUGIN_VERSION}" ]; then
-    wp plugin install "${PLUGIN_NAME}" --version="${PLUGIN_VERSION}" --force
-  else
-    wp plugin install "${PLUGIN_NAME}" --force
-  fi
-fi
-
-# Activate if requested and not active
-if [ "${PLUGIN_ACTIVATE}" = "true" ] && ! run wp plugin is-active "${PLUGIN_NAME}"; then
-  run wp plugin activate "${PLUGIN_NAME}"
-fi
-
-# Enable auto-updates if requested and not enabled
-AUTO_UPDATE_STATUS=$(wp plugin auto-updates status "${PLUGIN_NAME}" --field=status 2>/dev/null)
-if [ "${PLUGIN_AUTOUPDATE}" = "true" ] && [ "$AUTO_UPDATE_STATUS" = "disabled" ]; then
-  run wp plugin auto-updates enable "${PLUGIN_NAME}"
-fi
-
-# Deactivate maintenance mode
-if run wp maintenance-mode is-active; then
-  wp maintenance-mode deactivate
-fi
-
-echo "Init script completed!"
+echo "🎉 Init script voltooid!"

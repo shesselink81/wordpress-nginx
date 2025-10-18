@@ -1,34 +1,24 @@
-# wordpress-nginx
+# wordpress-apache
 
-Custom wordpress Docker image, from bitnami base image
-
-Helm install example:
-
-```console
-helm repo add gh-shesselink81-public https://shesselink81.github.io/helm-charts/public-charts/
-helm install wordpress-nginx gh-shesselink81-public/wordpress-nginx
-```
+Custom wordpress Docker image
 
 Docker Compose example:
 
 ```console
-curl -sSL https://raw.githubusercontent.com/shesselink81/wordpress-nginx/main/docker-compose.yml > docker-compose.yml
+curl -sSL https://raw.githubusercontent.com/shesselink81/wordpress-apache/main/docker-compose.yml > docker-compose.yml
 docker-compose up -d
 ```
 
-Helm Chart:
-<https://artifacthub.io/packages/helm/gh-shesselink81-public/wordpress-nginx>
-
 Docker images:
-<https://quay.io/repository/shesselink81/wordpress-nginx?tab=tags>
+<>
 
 Version info:
 
-* Wordpress version:  6.4
-* Nginx version:      1.25
-* PHP version:        8.2
+* Wordpress version:  6.8
+* Apache version:     2.4
+* PHP version:        8.4
 
 Installed php extensions:
 
-* memcached v1.6
-* imagick v3.7
+* memcached v3.2
+* imagick v3.8
